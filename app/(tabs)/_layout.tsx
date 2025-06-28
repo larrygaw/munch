@@ -1,6 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
+import React from 'react';
 
 export default function TabLayout() {
   return (
@@ -39,6 +41,15 @@ export default function TabLayout() {
             <AntDesign name={focused ? 'clockcircle' : 'clockcircleo'} color={color} size={22} />
           ),
         }} 
+      />
+      <Tabs.Screen
+        name="signoutPage"
+        options={{
+          tabBarLabel: 'Sign Out',
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome name="sign-out" color={color} size={24} />
+          ),
+        }}
       />
     </Tabs>
   );

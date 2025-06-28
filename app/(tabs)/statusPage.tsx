@@ -1,9 +1,10 @@
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function AboutScreen() {
+export default function StatusPage() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>About screen</Text>
+      <Text style={styles.text}>Status screen</Text>
     </View>
   );
 }
