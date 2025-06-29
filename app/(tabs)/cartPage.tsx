@@ -1,18 +1,37 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCart } from '../context/CartContext';
+import { useOrders } from '../context/OrderContext';
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, total, clearCart } = useCart();
+  const { createOrder } = useOrders();
 
   console.log('Cart items:', items);
   console.log('Cart total:', total);
 
+  const handleCheckout = () => {
+    if (items.length === 0) {
+      Alert.alert('Empty Cart', 'Please add items to your cart before checkout.');
+      return;
+    }
+
+    createOrder(items, total);
+    
+    clearCart();
+    
+    Alert.alert(
+      'Order Placed!',
+      'Your order has been successfully placed. Check the Status tab to track your order.',
+      [{ text: 'OK' }]
+    );
+  };
+
   if (items.length === 0) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
         <View style={styles.emptyContainer}>
           <Ionicons name="cart-outline" size={64} color="#666" />
           <Text style={styles.emptyText}>Your cart is empty</Text>
@@ -22,7 +41,7 @@ export default function CartPage() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Your Cart</Text>
@@ -63,7 +82,7 @@ export default function CartPage() {
           <Text style={styles.totalLabel}>Total:</Text>
           <Text style={styles.totalAmount}>${total.toFixed(2)}</Text>
         </View>
-        <TouchableOpacity style={styles.checkoutButton}>
+        <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
           <Text style={styles.checkoutButtonText}>Proceed to Checkout</Text>
         </TouchableOpacity>
       </View>

@@ -4,7 +4,6 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCart } from '../context/CartContext';
 
-// Mock data - Replace this with your actual data source
 const stalls = [
   {
     id: '1',
@@ -40,7 +39,6 @@ export default function HomePage() {
     });
   };
 
-  // Filter stalls and menu items based on search query
   const filteredStalls = useMemo(() => {
     if (!searchQuery.trim()) return stalls;
 
@@ -55,7 +53,7 @@ export default function HomePage() {
   }, [searchQuery]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
         <TextInput

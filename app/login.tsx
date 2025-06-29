@@ -80,25 +80,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#25292e', // Dark theme background
+    backgroundColor: '#25292e',
   },
   title: {
     fontSize: 40,
     fontWeight: '800',
     marginBottom: 40,
-    color: '#ffd33d', // Yellow accent color
+    color: '#ffd33d',
   },
   textInput: {
     height: 50,
     width: '90%',
-    backgroundColor: '#2c2f33', // Dark input background
-    borderColor: '#444', // Dark border
+    backgroundColor: '#2c2f33',
+    borderColor: '#444',
     borderWidth: 2,
     borderRadius: 15,
     marginVertical: 15,
     paddingHorizontal: 25,
     fontSize: 16,
-    color: '#fff', // White text
+    color: '#fff',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   buttonLogin: {
     width: '40%',
     marginVertical: 10,
-    backgroundColor: '#ffd33d', // Yellow accent color
+    backgroundColor: '#ffd33d',
     padding: 10,
     borderRadius: 15,
     alignItems: 'center',
@@ -123,9 +123,9 @@ const styles = StyleSheet.create({
   buttonSignUp: {
     width: '40%',
     marginVertical: 10,
-    backgroundColor: '#2c2f33', // Dark button background
+    backgroundColor: '#2c2f33',
     borderWidth: 2,
-    borderColor: '#ffd33d', // Yellow border
+    borderColor: '#ffd33d',
     padding: 10,
     borderRadius: 15,
     alignItems: 'center',
@@ -138,13 +138,13 @@ const styles = StyleSheet.create({
   },
 
   textLogin: {
-    color: '#25292e', // Dark text on yellow background
+    color: '#25292e',
     fontSize: 18,
     fontWeight: '600',
   },
 
   textSignUp: {
-    color: '#ffd33d', // Yellow text on dark background
+    color: '#ffd33d',
     fontSize: 18,
     fontWeight: '600',
   },
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   forgotPasswordButton: {
     width: '90%',
     marginVertical: 10,
-    backgroundColor: '#2c2f33', // Dark button background
+    backgroundColor: '#2c2f33',
     padding: 10,
     borderRadius: 15,
     alignItems: 'center',
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
 
   forgotPasswordText: {
-    color: '#ffd33d', // Yellow text on dark background
+    color: '#ffd33d',
     fontSize: 18,
     fontWeight: '600',
   },

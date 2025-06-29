@@ -21,7 +21,6 @@ export default function SignOutPage() {
       await signOut(auth);
       console.log('User signed out');
       router.replace('/login');
-      // No need to call router.replace here because the listener handles it
     } catch (error) {
       console.error('Sign-out error:', error);
     }
