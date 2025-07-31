@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { StallOrderCount, StallOrderService } from '../services/stallOrderService';
 
@@ -36,6 +37,46 @@ const OrderContext = createContext<OrderContextType | undefined>(undefined);
 export function OrderProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([]);
   const [stallOrders, setStallOrders] = useState<StallOrderCount[]>([]);
+
+  // Load orders from AsyncStorage on mount
+  useEffect(() => {
+    loadOrdersFromStorage();
+  }, []);
+
+  // Save orders to AsyncStorage whenever orders change
+  useEffect(() => {
+    saveOrdersToStorage();
+  }, [orders]);
+
+  const loadOrdersFromStorage = async () => {
+    try {
+      const savedOrders = await AsyncStorage.getItem('orders');
+      if (savedOrders) {
+        const parsedOrders = JSON.parse(savedOrders);
+        // Convert date strings back to Date objects
+        const ordersWithDates = parsedOrders.map((order: any) => ({
+          ...order,
+          orderTime: new Date(order.orderTime),
+          estimatedReadyTime: new Date(order.estimatedReadyTime),
+          items: order.items.map((item: any) => ({
+            ...item,
+            startTime: new Date(item.startTime),
+          })),
+        }));
+        setOrders(ordersWithDates);
+      }
+    } catch (error) {
+      console.error('Error loading orders from storage:', error);
+    }
+  };
+
+  const saveOrdersToStorage = async () => {
+    try {
+      await AsyncStorage.setItem('orders', JSON.stringify(orders));
+    } catch (error) {
+      console.error('Error saving orders to storage:', error);
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = StallOrderService.subscribeToStallOrders((stallOrders) => {

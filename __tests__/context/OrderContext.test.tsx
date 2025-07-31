@@ -1,12 +1,7 @@
-import { act, renderHook } from '@testing-library/react-native';
+import { act, renderHook } from '@testing-library/react';
 import React from 'react';
 import { OrderProvider, useOrders } from '../../app/context/OrderContext';
 import { StallOrderService } from '../../app/services/stallOrderService';
-
-// Mock FirebaseConfig
-jest.mock('../../FirebaseConfig', () => ({
-  db: {},
-}));
 
 // Mock the StallOrderService
 jest.mock('../../app/services/stallOrderService');
