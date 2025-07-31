@@ -45,7 +45,7 @@ export default function PaymentScreen() {
 
   const paymentMethods = [
     { id: 'card', name: 'Credit/Debit Card', icon: 'card-outline' },
-    { id: 'cash', name: 'Cash on Delivery', icon: 'cash-outline' },
+    { id: 'cash', name: 'Cash', icon: 'cash-outline' },
     { id: 'qr', name: 'PayNow/PayLah', icon: 'qr-code-outline' },
   ];
 
@@ -274,7 +274,7 @@ export default function PaymentScreen() {
 
       {selectedPaymentMethod === 'cash' && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Cash at counter</Text>
+          <Text style={styles.sectionTitle}>Cash</Text>
           <Text style={styles.paymentInfo}>
             Pay with cash at the counter.
           </Text>

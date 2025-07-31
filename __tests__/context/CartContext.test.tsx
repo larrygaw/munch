@@ -1,11 +1,6 @@
-import { act, renderHook } from '@testing-library/react-native';
+import { act, renderHook } from '@testing-library/react';
 import React from 'react';
 import { CartItem, CartProvider, useCart } from '../../app/context/CartContext';
-
-// Mock FirebaseConfig
-jest.mock('../../FirebaseConfig', () => ({
-  db: {},
-}));
 
 // Mock data
 const mockItem: Omit<CartItem, 'quantity'> = {
