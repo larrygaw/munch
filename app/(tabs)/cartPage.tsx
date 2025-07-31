@@ -1,13 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCart } from '../context/CartContext';
-import { useOrders } from '../context/OrderContext';
+import { useUser } from '../context/UserContext';
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, total, clearCart } = useCart();
-  const { createOrder } = useOrders();
+  const { userEmail } = useUser();
 
   console.log('Cart items:', items);
   console.log('Cart total:', total);
@@ -18,15 +19,19 @@ export default function CartPage() {
       return;
     }
 
-    createOrder(items, total);
-    
-    clearCart();
-    
-    Alert.alert(
-      'Order Placed!',
-      'Your order has been successfully placed. Check the Status tab to track your order.',
-      [{ text: 'OK' }]
-    );
+    if (!userEmail) {
+      Alert.alert('Error', 'Please log in to proceed with checkout.');
+      return;
+    }
+
+    router.push({
+      pathname: '/payment',
+      params: {
+        items: JSON.stringify(items),
+        total: total,
+        email: userEmail,
+      }
+    });
   };
 
   if (items.length === 0) {

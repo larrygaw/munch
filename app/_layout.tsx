@@ -9,13 +9,14 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/components/useColorScheme';
 import { CartProvider } from './context/CartContext';
 import { OrderProvider } from './context/OrderContext';
+import { UserProvider } from './context/UserContext';
 
 export {
-  ErrorBoundary
+    ErrorBoundary
 } from 'expo-router';
 
 export const unstable_settings = {
-  initialRouteName: '(tabs)',
+  initialRouteName: 'login',
 };
 
 SplashScreen.preventAutoHideAsync();
@@ -48,15 +49,23 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <OrderProvider>
-        <CartProvider>
-          <Stack>
-            <Stack.Screen name="login" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-          </Stack>
-        </CartProvider>
-      </OrderProvider>
+      <UserProvider>
+        <OrderProvider>
+          <CartProvider>
+            <Stack>
+              <Stack.Screen name="login" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+              <Stack.Screen
+                name="payment"
+                options={{
+                  headerShown: false
+                }}
+              />
+            </Stack>
+          </CartProvider>
+        </OrderProvider>
+      </UserProvider>
     </ThemeProvider>
   );
 }
