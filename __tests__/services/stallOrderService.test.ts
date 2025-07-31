@@ -1,6 +1,6 @@
 import { StallOrderCount, StallOrderService } from '../../app/services/stallOrderService';
 
-// Mock Firebase
+// mock Firebase
 jest.mock('firebase/firestore', () => ({
   collection: jest.fn(),
   doc: jest.fn(),
@@ -11,7 +11,7 @@ jest.mock('firebase/firestore', () => ({
   onSnapshot: jest.fn(),
 }));
 
-// Mock Firebase config
+// mock Firebase config
 jest.mock('../../FirebaseConfig', () => ({
   db: {},
 }));
@@ -57,7 +57,7 @@ describe('StallOrderService', () => {
 
       const waitingTime = StallOrderService.calculateWaitingTime('Chicken Rice Stall', stallOrders);
 
-      expect(waitingTime).toBe(5); // Minimum time (1 * 3 = 3, but minimum is 5)
+      expect(waitingTime).toBe(5);
     });
 
     test('should handle multiple stalls correctly', () => {
@@ -79,14 +79,14 @@ describe('StallOrderService', () => {
       const chickenRiceTime = StallOrderService.calculateWaitingTime('Chicken Rice Stall', stallOrders);
       const noodleTime = StallOrderService.calculateWaitingTime('Noodle Stall', stallOrders);
 
-      expect(chickenRiceTime).toBe(12); // 4 items * 3 minutes
-      expect(noodleTime).toBe(18); // 6 items * 3 minutes
+      expect(chickenRiceTime).toBe(12); 
+      expect(noodleTime).toBe(18);
     });
   });
 
   describe('getAllStallOrderCounts', () => {
     test('should return all stall counts', async () => {
-      // Mock the getStallOrderCount method
+      // mock the getStallOrderCount method
       const mockGetStallOrderCount = jest.spyOn(StallOrderService, 'getStallOrderCount');
       
       mockGetStallOrderCount
@@ -127,7 +127,7 @@ describe('StallOrderService', () => {
     });
 
     test('should handle missing stall data', async () => {
-      // Mock the getStallOrderCount method to return null
+      // mock the getStallOrderCount method to return null
       const mockGetStallOrderCount = jest.spyOn(StallOrderService, 'getStallOrderCount');
       mockGetStallOrderCount.mockResolvedValue(null);
 
@@ -150,7 +150,7 @@ describe('StallOrderService', () => {
       const mockCallback = jest.fn();
       const mockUnsubscribe = jest.fn();
 
-      // Mock onSnapshot to return unsubscribe function
+      // mock onSnapshot to return unsubscribe function
       const { onSnapshot } = require('firebase/firestore');
       onSnapshot.mockReturnValue(mockUnsubscribe);
 

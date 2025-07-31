@@ -1,4 +1,4 @@
-// Test cart logic without React Native dependencies
+//test cart logic without React Native dependencies
 interface CartItem {
   id: string;
   name: string;
@@ -7,7 +7,7 @@ interface CartItem {
   stallName: string;
 }
 
-// Pure cart logic functions
+// pure cart logic functions
 const addToCart = (items: CartItem[], newItem: Omit<CartItem, 'quantity'>): CartItem[] => {
   const existingItem = items.find(item => item.id === newItem.id);
   if (existingItem) {
