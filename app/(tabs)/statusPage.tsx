@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useOrders } from '../context/OrderContext';
 
 export default function StatusPage() {
-  const { orders, updateOrderStatus } = useOrders();
+  const { orders, updateOrderStatus, getOrderQueuePosition } = useOrders();
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -83,62 +83,82 @@ export default function StatusPage() {
       <Text style={styles.title}>Order Status</Text>
       
       <ScrollView style={styles.ordersContainer} showsVerticalScrollIndicator={false}>
-        {orders.map((order) => (
-          <View key={order.id} style={styles.orderCard}>
-            <View style={styles.orderHeader}>
-              <View style={styles.orderInfo}>
-                <Text style={styles.orderId}>Order #{order.id.slice(-6)}</Text>
-                <Text style={styles.orderTime}>
-                  Ordered at {formatTime(order.orderTime)}
-                </Text>
-              </View>
-              <View style={styles.statusContainer}>
-                {getStatusIcon(order.status)}
-                <Text style={styles.statusText}>{getStatusText(order.status)}</Text>
-              </View>
-            </View>
+        {orders.map((order) => {
+          const queuePosition = getOrderQueuePosition(order.id);
+          const remainingTime = getRemainingTime(order.estimatedReadyTime);
 
-            <View style={styles.divider} />
-
-            {order.items.map((item) => (
-              <View key={item.id} style={styles.orderItem}>
-                <View style={styles.itemInfo}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                  <Text style={styles.itemStall}>{item.stallName}</Text>
-                  <Text style={styles.itemQuantity}>Qty: {item.quantity}</Text>
-                </View>
-                <Text style={styles.itemPrice}>${(item.price * item.quantity).toFixed(2)}</Text>
-              </View>
-            ))}
-
-            <View style={styles.divider} />
-
-            <View style={styles.orderFooter}>
-              <View style={styles.totalContainer}>
-                <Text style={styles.totalLabel}>Total:</Text>
-                <Text style={styles.totalAmount}>${order.totalAmount.toFixed(2)}</Text>
-              </View>
-
-              {order.status === 'preparing' && (
-                <View style={styles.timeContainer}>
-                  <Ionicons name="time-outline" size={16} color="#ffd33d" />
-                  <Text style={styles.timeText}>
-                    {getRemainingTime(order.estimatedReadyTime)} min remaining
+          return (
+            <View key={order.id} style={styles.orderCard}>
+              <View style={styles.orderHeader}>
+                <View style={styles.orderInfo}>
+                  <Text style={styles.orderId}>Order #{order.id.slice(-6)}</Text>
+                  <Text style={styles.orderTime}>
+                    Ordered at {formatTime(order.orderTime)}
                   </Text>
                 </View>
-              )}
+                <View style={styles.statusContainer}>
+                  {getStatusIcon(order.status)}
+                  <Text style={styles.statusText}>{getStatusText(order.status)}</Text>
+                </View>
+              </View>
 
-              {order.status === 'ready' && (
-                <TouchableOpacity 
-                  style={styles.pickupButton}
-                  onPress={() => updateOrderStatus(order.id, 'completed')}
-                >
-                  <Text style={styles.pickupButtonText}>Mark as Picked Up</Text>
-                </TouchableOpacity>
-              )}
+              <View style={styles.divider} />
+
+              {order.items.map((item) => (
+                <View key={item.id} style={styles.orderItem}>
+                  <View style={styles.itemInfo}>
+                    <Text style={styles.itemName}>{item.name}</Text>
+                    <Text style={styles.itemStall}>{item.stallName}</Text>
+                    <Text style={styles.itemQuantity}>Qty: {item.quantity}</Text>
+                  </View>
+                  <Text style={styles.itemPrice}>${(item.price * item.quantity).toFixed(2)}</Text>
+                </View>
+              ))}
+
+              <View style={styles.divider} />
+
+              <View style={styles.orderFooter}>
+                <View style={styles.totalContainer}>
+                  <Text style={styles.totalLabel}>Total:</Text>
+                  <Text style={styles.totalAmount}>${order.totalAmount.toFixed(2)}</Text>
+                </View>
+
+                {order.status === 'preparing' && (
+                  <View style={styles.queueInfo}>
+                    <View style={styles.timeContainer}>
+                      <Ionicons name="time-outline" size={16} color="#ffd33d" />
+                      <Text style={styles.timeText}>
+                        {remainingTime} min remaining
+                      </Text>
+                    </View>
+                    <View style={styles.queueContainer}>
+                      <Ionicons name="people-outline" size={16} color="#ffd33d" />
+                      <Text style={styles.queueText}>
+                        Position #{queuePosition} in queue
+                      </Text>
+                    </View>
+                  </View>
+                )}
+
+                {order.status === 'ready' && (
+                  <TouchableOpacity 
+                    style={styles.pickupButton}
+                    onPress={() => updateOrderStatus(order.id, 'completed')}
+                  >
+                    <Text style={styles.pickupButtonText}>Pick Up</Text>
+                  </TouchableOpacity>
+                )}
+
+                {order.status === 'completed' && (
+                  <View style={styles.completedContainer}>
+                    <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
+                    <Text style={styles.completedText}>Order Completed</Text>
+                  </View>
+                )}
+              </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );
@@ -261,6 +281,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#ffd33d',
   },
+  queueInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+  },
   timeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -268,9 +294,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 6,
-    alignSelf: 'flex-start',
   },
   timeText: {
+    fontSize: 14,
+    color: '#ffd33d',
+    marginLeft: 6,
+    fontWeight: '500',
+  },
+  queueContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#444',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+  },
+  queueText: {
     fontSize: 14,
     color: '#ffd33d',
     marginLeft: 6,
@@ -287,5 +326,20 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  completedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#444',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+    marginTop: 8,
+  },
+  completedText: {
+    fontSize: 14,
+    color: '#4CAF50',
+    marginLeft: 6,
+    fontWeight: '500',
   },
 });
