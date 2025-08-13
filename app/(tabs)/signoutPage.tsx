@@ -19,7 +19,7 @@ export default function SignOutPage() {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      console.log('User signed out');
+      console.log('User signed out successfully');
       router.replace('/login');
     } catch (error) {
       console.error('Sign-out error:', error);
