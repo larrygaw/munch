@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { onAuthStateChanged } from 'firebase/auth';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { auth } from '../../FirebaseConfig';
 import { StallOrderCount, StallOrderService } from '../services/stallOrderService';
 
 export interface OrderItem {
@@ -37,6 +39,7 @@ const OrderContext = createContext<OrderContextType | undefined>(undefined);
 export function OrderProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([]);
   const [stallOrders, setStallOrders] = useState<StallOrderCount[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     loadOrdersFromStorage();
@@ -45,6 +48,19 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     saveOrdersToStorage();
   }, [orders]);
+
+  useEffect(() => {
+    const authUnsubscribe = onAuthStateChanged(auth, (user) => {
+      const authenticated = !!user;
+      setIsAuthenticated(authenticated);
+      
+      if (!authenticated) {
+        setStallOrders([]);
+      }
+    });
+
+    return () => authUnsubscribe();
+  }, []);
 
   const loadOrdersFromStorage = async () => {
     try {
@@ -76,13 +92,22 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
     const unsubscribe = StallOrderService.subscribeToStallOrders((stallOrders) => {
       setStallOrders(stallOrders);
     });
+    
     return () => unsubscribe();
-  }, []);
+  }, [isAuthenticated]);
 
   const createOrder = async (items: any[], totalAmount: number) => {
+    if (!isAuthenticated) {
+      throw new Error('User must be authenticated to create orders');
+    }
+
     const orderItems: OrderItem[] = items.map(item => ({
       id: item.id,
       name: item.name,
@@ -114,6 +139,10 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   };
 
   const updateOrderStatus = async (orderId: string, status: 'preparing' | 'ready' | 'completed') => {
+    if (!isAuthenticated) {
+      throw new Error('User must be authenticated to update orders');
+    }
+
     const order = orders.find(o => o.id === orderId);
     setOrders(prev => prev.map(order => 
       order.id === orderId ? { ...order, status } : order

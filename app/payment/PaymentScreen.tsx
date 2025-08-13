@@ -352,14 +352,13 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 8,
-    marginRight: 10,
+    marginRight: 16,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#ffd33d',
-    textAlign: 'center',
-    flex: 1,
+    textAlign: 'left',
   },
   section: {
     backgroundColor: '#2c2f33',
