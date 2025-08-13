@@ -41,17 +41,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#25292e', // Dark theme background
+    backgroundColor: '#25292e',
   },
   title: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#ffd33d', // Yellow accent color
+    color: '#ffd33d',
     marginBottom: 40,
   },
   button: {
     width: '90%',
-    backgroundColor: '#ffd33d', // Yellow accent color
+    backgroundColor: '#ffd33d',
     padding: 20,
     borderRadius: 15,
     alignItems: 'center',
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   text: {
-    color: '#25292e', // Dark text on yellow background
+    color: '#25292e',
     fontSize: 18,
     fontWeight: '600',
   },

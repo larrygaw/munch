@@ -10,7 +10,7 @@ const stalls = [
   {
     id: '1',
     name: 'Chicken Rice Stall',
-    location: { lat: 1.35050, lng: 103.84947 }, // Postal code 570514 coordinates
+    location: { lat: 1.35050, lng: 103.84947 },
     menuItems: [
       { id: '1', name: 'Chicken Rice', price: 5.50, description: 'Steamed chicken with fragrant rice and chili sauce' },
       { id: '2', name: 'Roasted Chicken Rice', price: 6.00, description: 'Roasted chicken with fragrant rice and chili sauce' },
@@ -20,7 +20,7 @@ const stalls = [
   {
     id: '2',
     name: 'Noodle Stall',
-    location: { lat: 1.35050, lng: 103.84947 }, // Postal code 570514 coordinates
+    location: { lat: 1.35050, lng: 103.84947 },
     menuItems: [
       { id: '1', name: 'Char Kway Teow', price: 4.50, description: 'Stir-fried flat rice noodles with prawns and Chinese sausage' },
       { id: '2', name: 'Laksa', price: 5.00, description: 'Spicy coconut curry noodle soup' },
@@ -30,7 +30,7 @@ const stalls = [
   {
     id: '3',
     name: 'Drinks Stall',
-    location: { lat: 1.35050, lng: 103.84947 }, // Postal code 570514 coordinates
+    location: { lat: 1.35050, lng: 103.84947 },
     menuItems: [
       { id: '1', name: 'Iced Milo', price: 2.50, description: 'Chilled Milo with ice' },
       { id: '2', name: 'Teh Tarik', price: 2.00, description: 'Pulled tea with condensed milk' },
@@ -40,7 +40,7 @@ const stalls = [
   {
     id: '4',
     name: 'Dessert Stall',
-    location: { lat: 1.35050, lng: 103.84947 }, // Postal code 570514 coordinates
+    location: { lat: 1.35050, lng: 103.84947 },
     menuItems: [
       { id: '1', name: 'Ice Kacang', price: 3.50, description: 'Shaved ice dessert with red beans and syrup' },
       { id: '2', name: 'Chendol', price: 3.00, description: 'Traditional dessert with green jelly and coconut milk' },

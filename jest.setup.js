@@ -1,4 +1,3 @@
-// Mock React
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
   createContext: jest.fn(),
@@ -8,7 +7,6 @@ jest.mock('react', () => ({
   createElement: jest.fn(),
 }));
 
-// Mock React Native
 jest.mock('react-native', () => ({
   View: 'View',
   Text: 'Text',
@@ -25,7 +23,6 @@ jest.mock('react-native', () => ({
   },
 }));
 
-// Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
   getItem: jest.fn(),
@@ -33,13 +30,11 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   clear: jest.fn(),
 }));
 
-// Mock Firebase Config
 jest.mock('./FirebaseConfig', () => ({
   auth: {},
   db: {},
 }));
 
-// Mock Expo modules
 jest.mock('expo-router', () => ({
   router: {
     push: jest.fn(),
@@ -52,7 +47,6 @@ jest.mock('expo-router', () => ({
   useLocalSearchParams: () => ({}),
 }));
 
-// Mock Firebase
 jest.mock('firebase/auth', () => ({
   signInWithEmailAndPassword: jest.fn(),
   createUserWithEmailAndPassword: jest.fn(),
@@ -70,7 +64,6 @@ jest.mock('firebase/firestore', () => ({
   onSnapshot: jest.fn(),
 }));
 
-// Mock Expo ImagePicker
 jest.mock('expo-image-picker', () => ({
   launchImageLibraryAsync: jest.fn(),
   MediaTypeOptions: {
@@ -82,12 +75,10 @@ jest.mock('expo-image-picker', () => ({
   },
 }));
 
-// Mock Expo Linking
 jest.mock('expo-linking', () => ({
   openURL: jest.fn(),
 }));
 
-// Global mocks
 global.console = {
   ...console,
   log: jest.fn(),

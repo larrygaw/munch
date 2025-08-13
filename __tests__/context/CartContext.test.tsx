@@ -2,7 +2,6 @@ import { act, renderHook } from '@testing-library/react';
 import React from 'react';
 import { CartItem, CartProvider, useCart } from '../../app/context/CartContext';
 
-// Mock data
 const mockItem: Omit<CartItem, 'quantity'> = {
   id: '1',
   name: 'Chicken Rice',
@@ -17,14 +16,12 @@ const mockItem2: Omit<CartItem, 'quantity'> = {
   stallName: 'Noodle Stall',
 };
 
-// Wrapper component for testing
 const wrapper = ({ children }: { children: React.ReactNode }) => (
   <CartProvider>{children}</CartProvider>
 );
 
 describe('CartContext', () => {
   beforeEach(() => {
-    // Clear any previous state
   });
 
   describe('addToCart', () => {
@@ -160,7 +157,7 @@ describe('CartContext', () => {
         result.current.addToCart(mockItem2);
       });
 
-      expect(result.current.total).toBe(10.00); // 5.50 + 4.50
+      expect(result.current.total).toBe(10.00);
     });
 
     test('should calculate total correctly for items with quantity > 1', () => {
@@ -168,10 +165,10 @@ describe('CartContext', () => {
 
       act(() => {
         result.current.addToCart(mockItem);
-        result.current.addToCart(mockItem); // This will increment quantity to 2
+        result.current.addToCart(mockItem);
       });
 
-      expect(result.current.total).toBe(11.00); // 5.50 * 2
+      expect(result.current.total).toBe(11.00);
     });
 
     test('should return 0 for empty cart', () => {

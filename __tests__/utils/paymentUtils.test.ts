@@ -1,9 +1,7 @@
-// mock FirebaseConfig
 jest.mock('../../FirebaseConfig', () => ({
   db: {},
 }));
 
-// test utility functions from PaymentScreen
 describe('Payment Utility Functions', () => {
   describe('formatCardNumber', () => {
     test('should format card number with spaces every 4 digits', () => {
@@ -161,8 +159,8 @@ describe('Payment Utility Functions', () => {
         return true;
       };
 
-      expect(validateCardDetails('123456789012', '12/25', '123', 'John Doe')).toBe(false); // short
-      expect(validateCardDetails('12345678901234567890', '12/25', '123', 'John Doe')).toBe(false); // long
+      expect(validateCardDetails('123456789012', '12/25', '123', 'John Doe')).toBe(false);
+      expect(validateCardDetails('12345678901234567890', '12/25', '123', 'John Doe')).toBe(false);
     });
 
     test('should return false for invalid expiry date format', () => {
@@ -187,10 +185,10 @@ describe('Payment Utility Functions', () => {
         return true;
       };
 
-      expect(validateCardDetails('1234567890123456', '1225', '123', 'John Doe')).toBe(false); // missing slash
-      expect(validateCardDetails('1234567890123456', '12-25', '123', 'John Doe')).toBe(false); // wrong separator
-      expect(validateCardDetails('1234567890123456', '1/25', '123', 'John Doe')).toBe(false); // single digit month
-      expect(validateCardDetails('1234567890123456', '12/5', '123', 'John Doe')).toBe(false); // single digit year
+      expect(validateCardDetails('1234567890123456', '1225', '123', 'John Doe')).toBe(false);
+      expect(validateCardDetails('1234567890123456', '12-25', '123', 'John Doe')).toBe(false);
+      expect(validateCardDetails('1234567890123456', '1/25', '123', 'John Doe')).toBe(false);
+      expect(validateCardDetails('1234567890123456', '12/5', '123', 'John Doe')).toBe(false);
     });
 
     test('should return false for invalid CVV length', () => {
@@ -215,8 +213,8 @@ describe('Payment Utility Functions', () => {
         return true;
       };
 
-      expect(validateCardDetails('1234567890123456', '12/25', '12', 'John Doe')).toBe(false); // too short
-      expect(validateCardDetails('1234567890123456', '12/25', '12345', 'John Doe')).toBe(false); // too long
+      expect(validateCardDetails('1234567890123456', '12/25', '12', 'John Doe')).toBe(false);
+      expect(validateCardDetails('1234567890123456', '12/25', '12345', 'John Doe')).toBe(false);
     });
   });
 }); 

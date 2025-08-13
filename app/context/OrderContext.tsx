@@ -9,7 +9,7 @@ export interface OrderItem {
   stallName: string;
   price: number;
   status: 'preparing' | 'ready' | 'completed';
-  estimatedTime: number; // in minutes
+  estimatedTime: number;
   startTime: Date;
 }
 
@@ -38,12 +38,10 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([]);
   const [stallOrders, setStallOrders] = useState<StallOrderCount[]>([]);
 
-  // Load orders from AsyncStorage on mount
   useEffect(() => {
     loadOrdersFromStorage();
   }, []);
 
-  // Save orders to AsyncStorage whenever orders change
   useEffect(() => {
     saveOrdersToStorage();
   }, [orders]);
@@ -53,7 +51,6 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
       const savedOrders = await AsyncStorage.getItem('orders');
       if (savedOrders) {
         const parsedOrders = JSON.parse(savedOrders);
-        // Convert date strings back to Date objects
         const ordersWithDates = parsedOrders.map((order: any) => ({
           ...order,
           orderTime: new Date(order.orderTime),
@@ -93,7 +90,7 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
       stallName: item.stallName,
       price: item.price,
       status: 'preparing' as const,
-      estimatedTime: 3, // Changed from 7 to 3 minutes
+      estimatedTime: 3,
       startTime: new Date(),
     }));
 
@@ -111,7 +108,6 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
 
     setOrders(prev => [newOrder, ...prev]);
     
-    // Update Firebase counts for each stall
     for (const item of orderItems) {
       await StallOrderService.addOrderToStall(item.stallName, item.quantity);
     }
@@ -123,8 +119,6 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
       order.id === orderId ? { ...order, status } : order
     ));
     
-    // Remove from Firebase when order is completed (for queue calculations)
-    // But keep the order visible on status page
     if (status === 'completed' && order) {
       for (const item of order.items) {
         await StallOrderService.removeOrderFromStall(item.stallName, item.quantity);
@@ -139,7 +133,7 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   const calculateEstimatedReadyTimeFromFirebase = (orderItems: OrderItem[], orderTime: Date): Date => {
     const totalWaitingTime = orderItems.reduce((total, item) => {
       const stallWaitingTime = StallOrderService.calculateWaitingTime(item.stallName, stallOrders);
-      return total + (item.quantity * 3); // 3 minutes per item
+      return total + (item.quantity * 3);
     }, 0);
     const finalWaitingTime = Math.max(5, totalWaitingTime);
     return new Date(orderTime.getTime() + (finalWaitingTime * 60000));

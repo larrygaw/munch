@@ -1,4 +1,3 @@
-// simple test to test jest
 describe('Simple Math Test', () => {
   test('should add two numbers correctly', () => {
     const add = (a: number, b: number) => a + b;

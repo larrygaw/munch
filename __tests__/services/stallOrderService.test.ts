@@ -1,6 +1,5 @@
 import { StallOrderCount, StallOrderService } from '../../app/services/stallOrderService';
 
-// Mock Firebase
 jest.mock('firebase/firestore', () => ({
   collection: jest.fn(),
   doc: jest.fn(),
@@ -11,7 +10,6 @@ jest.mock('firebase/firestore', () => ({
   onSnapshot: jest.fn(),
 }));
 
-// Mock Firebase config
 jest.mock('../../FirebaseConfig', () => ({
   db: {},
 }));
@@ -34,7 +32,7 @@ describe('StallOrderService', () => {
 
       const waitingTime = StallOrderService.calculateWaitingTime('Chicken Rice Stall', stallOrders);
 
-      expect(waitingTime).toBe(24); // 8 items * 3 minutes
+      expect(waitingTime).toBe(24);
     });
 
     test('should return minimum waiting time for non-existent stall', () => {
@@ -42,7 +40,7 @@ describe('StallOrderService', () => {
 
       const waitingTime = StallOrderService.calculateWaitingTime('Non-existent Stall', stallOrders);
 
-      expect(waitingTime).toBe(5); // Minimum time
+      expect(waitingTime).toBe(5);
     });
 
     test('should return minimum waiting time when calculation is below minimum', () => {
@@ -57,7 +55,7 @@ describe('StallOrderService', () => {
 
       const waitingTime = StallOrderService.calculateWaitingTime('Chicken Rice Stall', stallOrders);
 
-      expect(waitingTime).toBe(5); // Minimum time (1 * 3 = 3, but minimum is 5)
+      expect(waitingTime).toBe(5);
     });
 
     test('should handle multiple stalls correctly', () => {
@@ -79,14 +77,13 @@ describe('StallOrderService', () => {
       const chickenRiceTime = StallOrderService.calculateWaitingTime('Chicken Rice Stall', stallOrders);
       const noodleTime = StallOrderService.calculateWaitingTime('Noodle Stall', stallOrders);
 
-      expect(chickenRiceTime).toBe(12); // 4 items * 3 minutes
-      expect(noodleTime).toBe(18); // 6 items * 3 minutes
+      expect(chickenRiceTime).toBe(12);
+      expect(noodleTime).toBe(18);
     });
   });
 
   describe('getAllStallOrderCounts', () => {
     test('should return all stall counts', async () => {
-      // Mock the getStallOrderCount method
       const mockGetStallOrderCount = jest.spyOn(StallOrderService, 'getStallOrderCount');
       
       mockGetStallOrderCount
@@ -127,7 +124,6 @@ describe('StallOrderService', () => {
     });
 
     test('should handle missing stall data', async () => {
-      // Mock the getStallOrderCount method to return null
       const mockGetStallOrderCount = jest.spyOn(StallOrderService, 'getStallOrderCount');
       mockGetStallOrderCount.mockResolvedValue(null);
 
@@ -150,7 +146,6 @@ describe('StallOrderService', () => {
       const mockCallback = jest.fn();
       const mockUnsubscribe = jest.fn();
 
-      // Mock onSnapshot to return unsubscribe function
       const { onSnapshot } = require('firebase/firestore');
       onSnapshot.mockReturnValue(mockUnsubscribe);
 
@@ -222,8 +217,8 @@ describe('StallOrderService', () => {
       expect(doc).toHaveBeenCalledWith(expect.anything(), 'stallOrders', 'Chicken Rice Stall');
       expect(getDoc).toHaveBeenCalledWith(mockDocRef);
       expect(updateDoc).toHaveBeenCalledWith(mockDocRef, {
-        totalOrders: 2, // 3 - 1
-        totalItems: 6,  // 8 - 2
+        totalOrders: 2,
+        totalItems: 6,
         lastUpdated: expect.any(Date),
       });
     });
@@ -243,8 +238,8 @@ describe('StallOrderService', () => {
       await StallOrderService.removeOrderFromStall('Chicken Rice Stall', 3);
 
       expect(updateDoc).toHaveBeenCalledWith(mockDocRef, {
-        totalOrders: 0, // Math.max(0, 1 - 1)
-        totalItems: 0,  // Math.max(0, 1 - 3)
+        totalOrders: 0,
+        totalItems: 0,
         lastUpdated: expect.any(Date),
       });
     });

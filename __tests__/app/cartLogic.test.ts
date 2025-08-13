@@ -1,4 +1,3 @@
-// Test cart logic without React Native dependencies
 interface CartItem {
   id: string;
   name: string;
@@ -7,7 +6,6 @@ interface CartItem {
   stallName: string;
 }
 
-// Pure cart logic functions
 const addToCart = (items: CartItem[], newItem: Omit<CartItem, 'quantity'>): CartItem[] => {
   const existingItem = items.find(item => item.id === newItem.id);
   if (existingItem) {
@@ -89,7 +87,7 @@ describe('Cart Logic', () => {
     ];
     
     const total = calculateTotal(items);
-    expect(total).toBe(15.00); // (5.50 * 2) + (4.00 * 1)
+    expect(total).toBe(15.00);
   });
 
   test('should return 0 for empty cart', () => {

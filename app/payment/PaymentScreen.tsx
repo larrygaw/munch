@@ -3,14 +3,14 @@ import * as ImagePicker from 'expo-image-picker';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  Alert,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { useCart } from '../context/CartContext';
 import { useOrders } from '../context/OrderContext';
@@ -37,7 +37,6 @@ export default function PaymentScreen() {
   const [paymentScreenshot, setPaymentScreenshot] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   
-  // Card details state
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');

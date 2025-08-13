@@ -3,12 +3,10 @@ import React from 'react';
 import { OrderProvider, useOrders } from '../../app/context/OrderContext';
 import { StallOrderService } from '../../app/services/stallOrderService';
 
-// Mock the StallOrderService
 jest.mock('../../app/services/stallOrderService');
 
 const mockStallOrderService = StallOrderService as jest.Mocked<typeof StallOrderService>;
 
-// Mock data
 const mockItems = [
   {
     id: '1',
@@ -26,7 +24,6 @@ const mockItems = [
   },
 ];
 
-// Wrapper component for testing
 const wrapper = ({ children }: { children: React.ReactNode }) => (
   <OrderProvider>{children}</OrderProvider>
 );
@@ -34,7 +31,6 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 describe('OrderContext', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Mock the subscribeToStallOrders method
     mockStallOrderService.subscribeToStallOrders.mockReturnValue(() => {});
   });
 
@@ -73,14 +69,12 @@ describe('OrderContext', () => {
     test('should update order status correctly', async () => {
       const { result } = renderHook(() => useOrders(), { wrapper });
 
-      // First create an order
       await act(async () => {
         await result.current.createOrder(mockItems, 15.50);
       });
 
       const orderId = result.current.orders[0].id;
 
-      // Update the order status
       await act(async () => {
         await result.current.updateOrderStatus(orderId, 'ready');
       });
@@ -91,14 +85,12 @@ describe('OrderContext', () => {
     test('should remove from Firebase when order is completed', async () => {
       const { result } = renderHook(() => useOrders(), { wrapper });
 
-      // First create an order
       await act(async () => {
         await result.current.createOrder(mockItems, 15.50);
       });
 
       const orderId = result.current.orders[0].id;
 
-      // Complete the order
       await act(async () => {
         await result.current.updateOrderStatus(orderId, 'completed');
       });
@@ -113,7 +105,6 @@ describe('OrderContext', () => {
     test('should clear all orders', async () => {
       const { result } = renderHook(() => useOrders(), { wrapper });
 
-      // First create some orders
       await act(async () => {
         await result.current.createOrder(mockItems, 15.50);
         await result.current.createOrder(mockItems, 15.50);
@@ -121,7 +112,6 @@ describe('OrderContext', () => {
 
       expect(result.current.orders).toHaveLength(2);
 
-      // Clear orders
       act(() => {
         result.current.clearOrders();
       });
@@ -134,7 +124,6 @@ describe('OrderContext', () => {
     test('should return waiting time from StallOrderService', () => {
       const { result } = renderHook(() => useOrders(), { wrapper });
 
-      // Mock the calculateWaitingTime method
       mockStallOrderService.calculateWaitingTime.mockReturnValue(15);
 
       const waitingTime = result.current.getEstimatedWaitingTime('Chicken Rice Stall');
@@ -148,7 +137,6 @@ describe('OrderContext', () => {
     test('should return correct queue position for preparing orders', async () => {
       const { result } = renderHook(() => useOrders(), { wrapper });
 
-      // Create multiple orders
       await act(async () => {
         await result.current.createOrder(mockItems, 15.50);
         await result.current.createOrder(mockItems, 15.50);
@@ -172,19 +160,16 @@ describe('OrderContext', () => {
     test('should not count completed orders in queue', async () => {
       const { result } = renderHook(() => useOrders(), { wrapper });
 
-      // Create an order
       await act(async () => {
         await result.current.createOrder(mockItems, 15.50);
       });
 
       const orderId = result.current.orders[0].id;
 
-      // Complete the order
       await act(async () => {
         await result.current.updateOrderStatus(orderId, 'completed');
       });
 
-      // Queue position should be 0 since order is completed
       expect(result.current.getOrderQueuePosition(orderId)).toBe(0);
     });
   });
